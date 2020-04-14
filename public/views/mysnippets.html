@@ -1,0 +1,200 @@
+<html ng-app="myrepo" ng-controller="mysnippetsCtrl" ng-cloak="">
+
+<head>
+  <title>vizard - Visual Wizard</title>
+  <link rel="stylesheet" href="../support/bootstrap.min.css">
+  <link rel="stylesheet" href="../stylesheets/style.css">
+  <link rel="stylesheet" href="../support/font-awesome/css/font-awesome.css">
+  <style>
+
+    .navbar{
+      background-color: rgb(134, 134, 134);
+      padding:0px 0px 0px 25px;
+      height: 50px;
+      color: white !important;
+    }
+
+  .navbar-brand
+  {
+    background-color: #424242;
+    position: absolute;
+    padding: 15px;
+    font-weight: bolder;
+  }
+
+  .navbar-nav
+  {
+    margin-left:150px;
+    height: 100%;
+  }
+  .nav-item, .nav-link
+  {
+    height: 100%;
+    color: white !important;
+  }
+  .activeLink
+  {
+    background-color: #a7a7a7;
+  }
+  .nav-link
+  {
+    padding:15px 18px 0px 18px !important;
+  }
+
+  .btnSignout{
+    padding:10px 10px 0px 0px;
+  }
+
+  .sorryNot
+  {
+    font-family: "Montserrat";
+    margin-top: 15%;
+    font-size: 40PX;
+  }
+
+
+
+
+
+  /* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
+.flip-card {
+  background-color: transparent;
+  width: 300px;
+  height: 200px;
+  /* border: 1px solid #f1f1f1; */
+  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+}
+
+/* This container is needed to position the front and back side */
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Position the front and back side */
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+}
+
+/* Style the front side (fallback if image is missing) */
+.flip-card-front {
+  background-color: #bbb;
+  color: black;
+}
+
+/* Style the back side */
+.flip-card-back {
+  background-color: #bbb;
+  color: black;
+  transform: rotateY(180deg);
+}
+
+.btnSave{
+    padding:7px 10px 0px 0px;
+  }
+  </style>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700,900|Ubuntu:400,500,700" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-sm navbar-dark fixed-top">
+        <a class="navbar-brand active" href="#">myRepo</a>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link activeLink" >My Snippets</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="newsnippet">New Snippet</a>
+          </li>
+        </ul>
+        
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item btnSave">
+                <button ng-click="back();" class="btn">Back</button>
+              </li>
+            <li class="nav-item btnSignout">
+              <button ng-click="powerOff();" class="btn btn-danger"><i class="fa fa-power-off" aria-hidden="true"></i></button>
+            </li>
+          </ul>
+      </nav>
+
+
+      <div ng-if="isEmpty=='yes' && displayItem!='yes'" class="sorryNot text-center">
+        NOT SORRY! <br>
+        Please Add a snippet first.
+      </div>
+
+      <br>
+
+      <div ng-if="isEmpty=='no' && displayItem!='yes'">
+
+        <div class="row">
+          <div class="col-md-4" ng-repeat="item in repoRealData" style="margin-bottom: 20px;">
+              <div class="flip-card" ng-click="select(item)">
+                  <div class="flip-card-inner">
+                    <div class="flip-card-front" style="padding: 30px;">
+                      <h1>{{item.title}}</h1>
+                    </div>
+                    <div class="flip-card-back" style="padding: 20px">
+                     <h4>{{item.description}}</h4> 
+                    </div>
+                  </div>
+                </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div ng-if="displayItem=='yes'">
+
+          <div>
+  
+              <div class="row" style="margin-top: 2%">
+                <div class="col-md-4">
+                 <h4 class="noMarginBottom" >Title:</h4>
+                  <input type="text" name="" class="form-control" ng-model="selectedVar.title" disabled>
+                </div>
+                <div class="col-md-8">
+                  <h4 class="noMarginBottom" >Description:</h4>
+                  <input type="text" name="" class="form-control" disabled ng-model="selectedVar.description">
+                </div>
+              </div><br>
+      
+              <h4 class="noMarginBottom">Fragments:</h4>
+      
+              <div class="row">
+                <div ng-repeat-start="item in selectedVar.fragments" class="col-md-6">
+                  <div class="card" style="height: 100%;">
+                    <div class="card-header">Fragment {{i+1}}</div>
+                    <div class="card-body" style="height: 100%;padding: 0rem">
+                      <textarea style="height: 100%;width: 100%" ng-model="item" disabled></textarea>
+                    </div>
+                  </div>
+                </div>
+                <br ng-repeat-end="" />
+              </div>
+            </div>
+      </div>
+
+
+  <script src="../support/jquery_slim.min.js"></script>
+  <script src="../support/popper.min.js"></script>
+  <script src="../support/bootstrap.min.js"></script>
+  <script src="../support/angular.min.js"></script>
+  <script src="../javascripts/mysnippets.js"></script>
+</body>
+</html>
